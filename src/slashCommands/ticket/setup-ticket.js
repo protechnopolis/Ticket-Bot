@@ -1,6 +1,5 @@
 const { Client, CommandInteraction, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, AttachmentBuilder, ApplicationCommandOptionType, ChannelType } = require('discord.js');
 const config = require("../../config/config.json");
-const owners = config.OWNER;
 
 module.exports = {
     name: 'setup-ticket',
@@ -26,7 +25,9 @@ module.exports = {
      * @param {String[]} args 
      */
     run: async (client, interaction, args) => {
-        if(!owners.includes(interaction.user.id)) return interaction.reply({content: `Vous n'êtes pas Owner bot`, ephemeral: true});
+        if (!interaction.member.permissions.has("Administrator")) {
+            return interaction.reply({ content: "Vous devez être Administrateur pour utiliser cette commande.", ephemeral: true });
+        }
         const data = interaction.options.getChannel("channel");
         const data2 = interaction.options.getChannel("category")
 
@@ -87,4 +88,5 @@ module.exports = {
             
         })
     }
+
 }
